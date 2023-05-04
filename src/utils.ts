@@ -50,21 +50,21 @@ export const getCommandParams = async () => {
   const regex = /\/(?:gpt-translate|gt)\s+(\S+)\s+(\S+)\s+(\S+)/
   const match = regex.exec(comment)
 
-  await validateCommandChecker(comment, match)
+  // await validateCommandChecker(comment, match)
 
   const [, inputFilePath, outputFilePath, targetLang] = match!
   return { inputFilePath, outputFilePath, targetLang }
 }
 
-const validateCommandChecker = async (userCommand, match) => {
-  if (!match || match.length < 4)
-    await postError(`Invalid command: \`${userCommand}\`\n${COMMAND_USAGE}`)
+// const validateCommandChecker = async (userCommand, match) => {
+//   if (!match || match.length < 4)
+//     await postError(`Invalid command: \`${userCommand}\`\n${COMMAND_USAGE}`)
 
-  // TODO: Support other file types.
-  if (!match[1].endsWith('.md') || !match[2].endsWith('.md')) {
-    await postError('Error: File must be a markdown file.')
-  }
-}
+//   // TODO: Support other file types.
+//   if (!match[1].endsWith('.md') || !match[2].endsWith('.md')) {
+//     await postError('Error: File must be a markdown file.')
+//   }
+// }
 
 export const postError = async (message: string) => {
   await gitPostComment(`❌${message}`)
