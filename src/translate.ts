@@ -32,8 +32,6 @@ export const publishTranslate = async (
 
   const directory_listing = await listDir();
 
-  console.log(directory_listing)
-
   if (directory_listing){
 
     for(let file of directory_listing){
@@ -45,9 +43,17 @@ export const publishTranslate = async (
       console.error(content)
 
       const translated = await translate(content, targetLang)
-      
+
+      console.error(translated)
+
       await createFile(translated, outputFilePath + file)
+
+      console.error(outputFilePath + file)
+
       await gitAdd(branch, outputFilePath + file)
+
+      console.error(branch+ outputFilePath + file)
+      
     }
 
     await gitPush(branch, outputFilePath)
