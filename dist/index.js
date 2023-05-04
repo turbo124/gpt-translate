@@ -19379,6 +19379,7 @@ const translate = async (text, targetLanguage, maxToken = 2000, splitter = `\n\n
     const contentChunks = text.split(splitter);
     for (let i = 0; i < contentChunks.length; i++) {
         if ((0, gpt_3_encoder_1.encode)(chunk + contentChunks[i]).length > maxToken) {
+            console.error("translating:" + chunk);
             const translatedContent = await (0, exports.askGPT)(chunk, prompt);
             translated += translatedContent + splitter;
             chunk = '';
