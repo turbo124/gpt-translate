@@ -38,11 +38,14 @@ export const publishTranslate = async (
 
     for(let file of directory_listing){
 
+      console.error(inputFilePath + file)
+
       const content = await fs.readFile(inputFilePath + file, 'utf-8')
 
-      console.log(inputFilePath + file)
+      console.error(content)
 
       const translated = await translate(content, targetLang)
+      
       await createFile(translated, outputFilePath + file)
       await gitAdd(branch, outputFilePath + file)
     }
