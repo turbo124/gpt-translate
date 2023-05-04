@@ -2,11 +2,13 @@ import fs from 'fs/promises'
 import { translate } from './gpt'
 import { isPR, createFile, isFileExists } from './utils'
 import {
+  gitAdd,
   gitCheckout,
   gitCommitPush,
   gitCreateBranch,
   gitCreatePullRequest,
   gitPostComment,
+  gitPush,
   gitSetConfig,
 } from './git'
 import { context } from '@actions/github'
@@ -19,27 +21,52 @@ export const publishTranslate = async (
   await gitSetConfig()
   const branch = isPR() ? await gitCheckout() : await gitCreateBranch()
 
-  const content = await fs.readFile(inputFilePath, 'utf-8')
-  const translated = await translate(content, targetLang)
-
-  // Check if the translation is same as the original
-  if (await isFileExists(outputFilePath)) {
-    const fileContent = await fs.readFile(outputFilePath, 'utf-8')
-    if (fileContent === translated) {
-      await gitPostComment(
-        '⛔ The result of translation was same as the existed output file.',
-      )
-      return
+  async function listDir() {
+    try {
+      return await fs.readdir(inputFilePath).then(filenames  => {
+        return filenames.filter(filename => filename.endsWith('.md'))}
+        );
+    } catch (err) {
+      console.error('Error occurred while reading directory!', err);
     }
   }
 
-  await createFile(translated, outputFilePath)
+  const directory_listing = await listDir();
 
-  await gitCommitPush(branch, outputFilePath)
-  if (isPR()) {
-    await gitPostComment('🎉Translation completed!')
-    return
+  if (directory_listing){
+
+    for(let file of directory_listing){
+
+      const content = await fs.readFile(inputFilePath + file, 'utf-8')
+      const translated = await translate(content, targetLang)
+      await createFile(translated, outputFilePath)
+      await gitAdd(branch, outputFilePath)
+    }
+
+    await gitPush(branch, outputFilePath)
+
+    if (isPR()) {
+      await gitPostComment('🎉Translation completed!')
+      return
+
+    }
+
+
   }
+
+
+
+
+
+
+
+
+
+
+  }
+
+
+
 
   const issueNumber = context.issue.number
   const title = '🌐 Add LLM Translations'
