@@ -39,8 +39,8 @@ export const publishTranslate = async (
 
       const content = await fs.readFile(inputFilePath + file, 'utf-8')
       const translated = await translate(content, targetLang)
-      await createFile(translated, outputFilePath)
-      await gitAdd(branch, outputFilePath)
+      await createFile(translated, outputFilePath + file)
+      await gitAdd(branch, outputFilePath + file)
     }
 
     await gitPush(branch, outputFilePath)
