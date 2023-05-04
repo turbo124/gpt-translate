@@ -32,11 +32,16 @@ export const publishTranslate = async (
 
   const directory_listing = await listDir();
 
+  console.log(directory_listing)
+
   if (directory_listing){
 
     for(let file of directory_listing){
 
       const content = await fs.readFile(inputFilePath + file, 'utf-8')
+
+      console.log(inputFilePath + file)
+
       const translated = await translate(content, targetLang)
       await createFile(translated, outputFilePath + file)
       await gitAdd(branch, outputFilePath + file)
