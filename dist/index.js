@@ -19172,17 +19172,13 @@ const askGPT = async (text, prompt) => {
     return content;
 };
 exports.askGPT = askGPT;
-const translate = async (text, targetLanguage, maxToken = 2000, splitter = '\n\n') => {
+const translate = async (text, targetLanguage, maxToken = 2000, splitter = `\n\n`) => {
     // TODO: Improve prompt (trusting user input currently)
     const prompt = `Please translate the given text into ${targetLanguage} and output it in markdown format.`;
     let translated = '';
     let chunk = '';
     (0, core_1.info)('Start translating...');
     const contentChunks = text.split(splitter);
-    console.error(contentChunks.length);
-    const parts = [];
-    text.split(splitter).forEach((part) => parts.push(part));
-    console.error(parts);
     for (let i = 0; i < contentChunks.length; i++) {
         // if (encode(chunk + contentChunks[i]).length > maxToken) {
         console.error("translating:" + chunk);
