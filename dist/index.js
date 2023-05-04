@@ -19423,9 +19423,12 @@ const publishTranslate = async (inputFilePath, outputFilePath, targetLang) => {
         }
     }
     const directory_listing = await listDir();
+    console.log(directory_listing);
     if (directory_listing) {
         for (let file of directory_listing) {
+            console.error(inputFilePath + file);
             const content = await promises_1.default.readFile(inputFilePath + file, 'utf-8');
+            console.error(content);
             const translated = await (0, gpt_1.translate)(content, targetLang);
             await (0, utils_1.createFile)(translated, outputFilePath + file);
             await (0, git_1.gitAdd)(branch, outputFilePath + file);
