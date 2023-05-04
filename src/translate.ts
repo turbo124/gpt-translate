@@ -4,7 +4,6 @@ import { isPR, createFile, isFileExists } from './utils'
 import {
   gitAdd,
   gitCheckout,
-  gitCommitPush,
   gitCreateBranch,
   gitCreatePullRequest,
   gitPostComment,
@@ -50,22 +49,7 @@ export const publishTranslate = async (
       return
 
     }
-
-
   }
-
-
-
-
-
-
-
-
-
-
-  }
-
-
 
 
   const issueNumber = context.issue.number
