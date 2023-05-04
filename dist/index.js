@@ -19370,7 +19370,7 @@ const askGPT = async (text, prompt) => {
     return content;
 };
 exports.askGPT = askGPT;
-const translate = async (text, targetLanguage, maxToken = 2000, splitter = `\n\n`) => {
+const translate = async (text, targetLanguage, maxToken = 2000, splitter = '\n\n') => {
     // TODO: Improve prompt (trusting user input currently)
     const prompt = `Please translate the given text into ${targetLanguage} and output it in markdown format.`;
     let translated = '';
@@ -19428,7 +19428,6 @@ const publishTranslate = async (inputFilePath, outputFilePath, targetLang) => {
         for (let file of directory_listing) {
             console.error(inputFilePath + file);
             const content = await promises_1.default.readFile(inputFilePath + file, 'utf-8');
-            console.error(content);
             const translated = await (0, gpt_1.translate)(content, targetLang);
             console.error(translated);
             await (0, utils_1.createFile)(translated, outputFilePath + file);

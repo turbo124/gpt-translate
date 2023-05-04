@@ -42,7 +42,7 @@ export const translate = async (
   text: string,
   targetLanguage: string,
   maxToken = 2000,
-  splitter = `\n\n`,
+  splitter = '\n\n',
 ): Promise<string> => {
   // TODO: Improve prompt (trusting user input currently)
   const prompt = `Please translate the given text into ${targetLanguage} and output it in markdown format.`
@@ -51,12 +51,14 @@ export const translate = async (
   let chunk = ''
 
   info('Start translating...')
+
   const contentChunks = text.split(splitter)
+   
   for (let i = 0; i < contentChunks.length; i++) {
     if (encode(chunk + contentChunks[i]).length > maxToken) {
 
       console.error("translating:" + chunk)
-      
+
       const translatedContent = await askGPT(chunk, prompt)
       translated += translatedContent + splitter
       chunk = ''
