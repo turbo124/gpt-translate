@@ -53,10 +53,14 @@ export const translate = async (
   info('Start translating...')
 
   const contentChunks = text.split(splitter)
-   
   console.error(contentChunks.length)
 
-  
+  const parts: string[] = [];
+  text.split(splitter).forEach((part) => parts.push(part))
+  console.error(parts)
+
+
+
   for (let i = 0; i < contentChunks.length; i++) {
     if (encode(chunk + contentChunks[i]).length > maxToken) {
 
